@@ -6,26 +6,45 @@ const initialWheelState = 0
 function wheel(state = initialWheelState, action) {
   switch(action.type) {
     case types.MOVE_CLOCKWISE: 
-       return state + action.payload
-    
-    
+      if (state === 5) {
+        return state * 0
+      } else {
+        return state + action.payload
+      }
+  
     case types.MOVE_COUNTERCLOCKWISE: 
+    if (state === 0) {
+      return state + 5
+    } else {
       return state - action.payload
-    
+    }
     default:
       return state
   }
  
 }
 
-const initialQuizState = null
+
+const initialQuizState = ""
 function quiz(state = initialQuizState, action) {
-  return state
+  // debugger
+  switch(action.type) {
+    case types.SET_QUIZ_INTO_STATE:
+      console.log('payload', action.payload)
+      return state = action.payload
+  
+    // case types.SET_SELECTED_ANSWER:
+    //   return state = action.payload
+  
+  default:
+    return state  
+  }
 }
 
 const initialSelectedAnswerState = null
 function selectedAnswer(state = initialSelectedAnswerState, action) {
-  return state
+  
+ return state
 }
 
 const initialMessageState = ''
@@ -42,4 +61,9 @@ function form(state = initialFormState, action) {
   return state
 }
 
-export default combineReducers({ wheel, quiz, selectedAnswer, infoMessage, form })
+export default combineReducers({ 
+  wheelState: wheel, 
+  quizState: quiz, 
+  selectedAnswerState: selectedAnswer, 
+  infoMessageState: infoMessage, 
+  formState: form })
