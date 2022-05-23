@@ -2,6 +2,7 @@
 import * as types from './action-types'
 import axios from 'axios'
 const URL = "http://localhost:9000/api/quiz/next"
+const POSTURL =  "http://localhost:9000/api/quiz/answer"
 
 export function moveClockwise() { 
   return({type: types.MOVE_CLOCKWISE, payload: 1})
@@ -26,13 +27,15 @@ export const setQuiz = () => (dispatch) => {
 
 
 
-export function selectAnswer() {
- return({type: types.SET_SELECTED_ANSWER, payload: 'SELECTED' })
+export function selectAnswer(id) {
+ return({type: types.SET_SELECTED_ANSWER, payload: id})
       
 
 }
 
-export function setMessage() { } // this will be where the axios post request goes
+export function setMessage() { // this will be where the axios post request goes
+  return({type: types.SET_INFO_MESSAGE, payload: ""})
+}
 
 export function inputChange() { }
 
@@ -46,8 +49,27 @@ export function fetchQuiz() {
     // - Dispatch an action to send the obtained quiz to its state
   }
 }
-export function postAnswer() {
+export function postAnswer(quizID, answerID) {
+  // console.log("POST ID's", quizID, answerID)
   return function (dispatch) {
+    axios
+      .post(POSTURL, {
+        "quiz_id": quizID,
+        "answer_id": answerID,
+      })
+      .then(res => {
+        console.log("new RES", res)
+        dispatch({
+          type: types.SET_SELECTED_ANSWER, payload: null
+        })
+        dispatch({
+          type: types.SET_INFO_MESSAGE, payload: res.data.message
+        })
+        // dispatch({
+        //   setQuiz
+        // })
+      })
+      
     // On successful POST:
     // - Dispatch an action to reset the selected answer state
     // - Dispatch an action to set the server message to state
@@ -56,6 +78,7 @@ export function postAnswer() {
 }
 export function postQuiz() {
   return function (dispatch) {
+
     // On successful POST:
     // - Dispatch the correct message to the the appropriate state
     // - Dispatch the resetting of the form

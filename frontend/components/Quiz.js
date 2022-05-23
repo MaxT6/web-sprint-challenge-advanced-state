@@ -11,6 +11,8 @@ useEffect(() => {
 
 
 // ****** retlates to question *****
+  console.log("quiz id", props.quizState.quiz_id);
+  const quiz_id = props.quizState.quiz_id
   console.log(props.selectAnswer)
   const question = props.quizState.question
 
@@ -31,18 +33,7 @@ const answerID = (answers ?? []).map(obj => obj.answer_id)
 console.log("Answer ID", answerID)
   
 
-  // const onClick = (answer_id) => {
-  //   0 === 0 ? 'SELECTED' : 'Select' //you need state to change the selection
-  // }
 
-  // const onClick = (id) => {
-  //   if(id === answerID[0]) {
-  //     return selectedAnswer()
-  //   }
-  // }
-
-  const onClick = () => {props.selectAnswer(), console.log('onClick SELECTED', props.selectedAnswerState)}
-  console.log('select', props.selectedAnswerState)
 
   return (
     <div id="wrapper">
@@ -54,25 +45,27 @@ console.log("Answer ID", answerID)
 
             <div id="quizAnswers">
               <div 
-                className={`answer ${'if ID === clicked Id' ? 'selected' : ''}`} 
-                id = {answerID[0]}
-                onClick={() => onClick()}>
+                className={`answer ${props.selectedAnswerState === answerID[0] ? 'selected' : ''}`} 
+                id = {answerID[0]}>
               
                {answerText[0]}
-                <button>
-                  {/* {props.selectedAnswerState === '' ? 'Select' : 'Select'}  needs to specify state more specifically*/} 
+                <button onClick={() => props.selectAnswer(answerID[0])}>
+                  {props.selectedAnswerState === answerID[0] ? 'SELECTED' : 'Select'}
                 </button>
               </div>
              
-              <div className="answer" id = {answerID[1]}>
+              <div className={`answer ${props.selectedAnswerState === answerID[1] ? 'selected' : ''}`}>
                {answerText[1]}
-                <button>
-                  {props.selectedAnswerState === '' ? 'Select' : props.selectedAnswerState}
+                <button onClick={() => props.selectAnswer(answerID[1])}>
+                  {props.selectedAnswerState === answerID[1] ? 'SELECTED' : 'Select'}
                 </button>
               </div>
             </div>
 
-            <button id="submitAnswerBtn">Submit answer</button>
+            <button 
+              disabled={`${props.selectedAnswerState === answerID[0] || props.selectedAnswerState === answerID[1] ? "" : "{true}" }`} 
+              id="submitAnswerBtn"
+              onClick={() => props.postAnswer(quiz_id, props.selectedAnswerState )}>Submit answer</button>
           </>
         ) : 'Loading next quiz...'
       }
