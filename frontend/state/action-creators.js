@@ -27,12 +27,12 @@ export const setQuiz = () => (dispatch) => {
 
 
 export function selectAnswer() {
- return({type: types.SET_SELECTED_ANSWER, payload })
+ return({type: types.SET_SELECTED_ANSWER, payload: 'SELECTED' })
       
 
 }
 
-export function setMessage() { }
+export function setMessage() { } // this will be where the axios post request goes
 
 export function inputChange() { }
 

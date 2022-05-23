@@ -21,7 +21,6 @@ function wheel(state = initialWheelState, action) {
     default:
       return state
   }
- 
 }
 
 
@@ -33,18 +32,19 @@ function quiz(state = initialQuizState, action) {
       console.log('payload', action.payload)
       return state = action.payload
   
-    // case types.SET_SELECTED_ANSWER:
-    //   return state = action.payload
-  
   default:
     return state  
   }
 }
 
-const initialSelectedAnswerState = null
+const initialSelectedAnswerState = ''
 function selectedAnswer(state = initialSelectedAnswerState, action) {
-  
- return state
+  switch(action.type) {
+    case types.SET_SELECTED_ANSWER:
+      return state = action.payload
+ default: 
+  return state
+  }
 }
 
 const initialMessageState = ''
