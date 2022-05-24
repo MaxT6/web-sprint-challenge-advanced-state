@@ -33,8 +33,8 @@ export function selectAnswer(id) {
 
 }
 
-export function setMessage() { // this will be where the axios post request goes
-  return({type: types.SET_INFO_MESSAGE, payload: ""})
+export function setMessage(message) { // this will be where the axios post request goes
+  return({type: types.SET_INFO_MESSAGE, payload: message})
 }
 
 export function inputChange() { }
@@ -44,6 +44,7 @@ export function resetForm() { }
 // ❗ Async action creators
 export function fetchQuiz() {
   return function (dispatch) {
+    dispatch(setQuiz())
     // First, dispatch an action to reset the quiz state (so the "Loading next quiz..." message can display)
     // On successful GET:
     // - Dispatch an action to send the obtained quiz to its state
@@ -59,15 +60,9 @@ export function postAnswer(quizID, answerID) {
       })
       .then(res => {
         console.log("new RES", res)
-        dispatch({
-          type: types.SET_SELECTED_ANSWER, payload: null
-        })
-        dispatch({
-          type: types.SET_INFO_MESSAGE, payload: res.data.message
-        })
-        // dispatch({
-        //   setQuiz
-        // })
+        dispatch(selectAnswer(null))
+        dispatch(setMessage(res.data.message))
+        dispatch(setQuiz())
       })
       
     // On successful POST:

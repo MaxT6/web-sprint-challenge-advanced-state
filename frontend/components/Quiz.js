@@ -47,7 +47,6 @@ console.log("Answer ID", answerID)
               <div 
                 className={`answer ${props.selectedAnswerState === answerID[0] ? 'selected' : ''}`} 
                 id = {answerID[0]}>
-              
                {answerText[0]}
                 <button onClick={() => props.selectAnswer(answerID[0])}>
                   {props.selectedAnswerState === answerID[0] ? 'SELECTED' : 'Select'}
@@ -65,7 +64,8 @@ console.log("Answer ID", answerID)
             <button 
               disabled={`${props.selectedAnswerState === answerID[0] || props.selectedAnswerState === answerID[1] ? "" : "{true}" }`} 
               id="submitAnswerBtn"
-              onClick={() => props.postAnswer(quiz_id, props.selectedAnswerState )}>Submit answer</button>
+              onClick={() => props.postAnswer(quiz_id, props.selectedAnswerState )}
+              >Submit answer</button>
           </>
         ) : 'Loading next quiz...'
       }
