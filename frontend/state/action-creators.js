@@ -3,6 +3,7 @@ import * as types from './action-types'
 import axios from 'axios'
 const URL = "http://localhost:9000/api/quiz/next"
 const POSTURL =  "http://localhost:9000/api/quiz/answer"
+const POSTNEWURL = "http://localhost:9000/api/quiz/new"
 
 export function moveClockwise() { 
   return({type: types.MOVE_CLOCKWISE, payload: 1})
@@ -37,14 +38,22 @@ export function setMessage(message) { // this will be where the axios post reque
   return({type: types.SET_INFO_MESSAGE, payload: message})
 }
 
-export function inputChange() { }
+export function inputChange(newQuestion, newTrueAnswer, newFalseAnswer) {
+  return ({
+    type: types.INPUT_CHANGE,
+    payload: {newQuestion, newTrueAnswer, newFalseAnswer}
+  })
+ }
 
-export function resetForm() { }
+export function resetForm() {
+  return ({
+    type: types.RESET_FORM
+  })
+ }
 
 // ❗ Async action creators
 export function fetchQuiz() {
   return function (dispatch) {
-    dispatch(setQuiz())
     // First, dispatch an action to reset the quiz state (so the "Loading next quiz..." message can display)
     // On successful GET:
     // - Dispatch an action to send the obtained quiz to its state
@@ -71,8 +80,22 @@ export function postAnswer(quizID, answerID) {
     // - Dispatch the fetching of the next quiz
   }
 }
-export function postQuiz() {
+export function postQuiz(newQuestion, newTrueAnswer, newFalseAnswer ) {
+  console.log("SUBMIT POST", newQuestion, newTrueAnswer, newFalseAnswer)
   return function (dispatch) {
+    axios.post(POSTNEWURL, {
+      "question_text": newQuestion, 
+      "true_answer_text": newTrueAnswer, 
+      "false_answer_text": newFalseAnswer, 
+    })
+    .then(res => {
+      console.log("new Quiz RES", res)
+      dispatch(setMessage(`Congrats: "${res.data.question}" is a great question!`))
+      dispatch(resetForm())
+    })
+    .catch(err => {
+      console.error(err)
+    })
 
     // On successful POST:
     // - Dispatch the correct message to the the appropriate state
